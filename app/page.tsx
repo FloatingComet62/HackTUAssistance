@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Toaster } from "sonner";
 import { debounce } from "@tanstack/pacer";
+import { useState } from "react";
 
 export default function Home() {
   function SendRequest(tableStr: string, request: string) {
@@ -29,16 +30,18 @@ export default function Home() {
   const DebouncedSendRequest = debounce(SendRequest, {
     wait: 500,
   });
+
+  const [table, setTable] = useState("");
+  const [request, setRequest] = useState("");
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black">
         <div className="text-4xl font-bold">HackTU Assistance Portal</div>
         <form className="flex flex-col gap-4 items-center w-1/2" onSubmit={(e) => {
           e.preventDefault();
-          const formData = new FormData(e.currentTarget);
-          const table = formData.get("table")!;
-          const request = formData.get("request")!;
-          DebouncedSendRequest(table.toString(), request.toString());
+          DebouncedSendRequest(table, request);
+          setTable("");
+          setRequest("");
         }}>
           <Field>
             <FieldLabel htmlFor="email">Table Number</FieldLabel>
@@ -47,6 +50,8 @@ export default function Home() {
               name="table"
               type="number"
               className="text-center"
+              value={table}
+              onChange={(e) => setTable(e.target.value)}
               required
             />
           </Field>
@@ -57,6 +62,8 @@ export default function Home() {
               name="request"
               type="text"
               className="text-center"
+              value={request}
+              onChange={(e) => setRequest(e.target.value)}
               required
             />
           </Field>
