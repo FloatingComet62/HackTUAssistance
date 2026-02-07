@@ -9,8 +9,7 @@ import { debounce } from "@tanstack/pacer";
 import { useState } from "react";
 
 export default function Home() {
-  function SendRequest(tableStr: string, request: string) {
-    const table = parseInt(tableStr);
+  function SendRequest(table: string, request: string) {
     fetch('https://api-decypher.ccstiet.com/api/collections/complains/records', {
       method: "POST",
       headers: {
@@ -48,7 +47,7 @@ export default function Home() {
             <Input
               id="table"
               name="table"
-              type="number"
+              type="text"
               className="text-center"
               value={table}
               onChange={(e) => setTable(e.target.value)}
